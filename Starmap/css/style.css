@@ -1,0 +1,57 @@
+* { box-sizing: border-box; outline: none }
+body { display:flex; align-content:stretch; width:100vw; height:100vh; font-size: 16px; font-family: Arial, "Microsoft YaHei"; margin:0 }
+
+.menu { width: 360px; height:100%; overflow-y: scroll; margin:0;}
+
+/* search bar */
+.searchbar { width:100%; height:auto; margin:0; padding: 10px }
+.searchbar input { width:100%; height: 30px; }
+.searchbar span { display:block; width:100%; height:auto; font-size: 14px; line-height: 14px; padding: 4px; margin-left: 3px; color: #999}
+/* list */
+#list-container { width: 100%; height: auto; margin: 0; padding: 0 }
+.list-folder { width:100%; height:auto; margin: 0 0 5px 0; border: 1px solid #ccc; border-radius:3px; }
+.close .list-folder { display:none }
+.close .list-item   { display:none }
+.hide { display:none }
+
+.season { padding: 0 3px 0 3px;}
+.constellation, .star { padding: 0 25px 0 25px }
+
+.list-title {
+    display:block;
+    height:40px;
+    line-height: 40px;
+    color: #333;
+    cursor:pointer;
+    user-select:none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+}
+.list-title span { font-size: 12px; color: #999; font-weight: normal; margin-left:10px}
+.star .list-title span { float: right; font-size: 14px; color: #999 }
+
+.season > .list-title { color: #ccc; text-align: center}
+.constellation > .list-title { font-weight: bold }
+
+.list-item { width:100%; height:auto; padding:5px 0 10px 0; }
+.list-item span { display:block; width:100%; height: 25px; line-height:25px; color:#999; font-size: 14px}
+
+.content { display:flex; align-items: center; height: 100%; width: calc(100% - 360px); margin:0 }
+.content span { width: auto; height:auto; margin:0 auto; font-size: 14px; color:#999 }
+
+/*
+Notes:
+* Flexbox炒鸡好用!!
+* 空格表示所有层级的子物体，'>'表示直接关联的子物体
+* overflow-y: scroll - div仅纵向滚动条
+* 100vw 100vh: 浏览器窗口大小的百分比，和scroll搭配使用效果奇佳
+
+* -webkit-user-select: none 禁止框选文字，有效解决双击时文字被选中的问题（chrome需前缀
+
+Js notes:
+* split(" ") join(" ") 以指定分隔符 分割 / 合并字符串
+* splice(i, k) 在数组中，从角标i开始删除k个元素
+
+*/

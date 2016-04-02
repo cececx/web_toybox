@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>喵同学的巨型玩具箱</title>
+    <link rel="shortcut icon" href="img/icon4.ico">
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body onload="init()">
+<div class="menu">
+    <div class="searchbar">
+        <input id="search" type="text" placeholder="Search for stars (alias not supported yet)" />
+        <div id="search-result">
+        </div>
+    </div>
+    <div id="list-container">
+    </div>
+</div>
+<div class="content">
+    <canvas id = "canvas"></canvas>
+</div>
+<script src="js/data.js"></script>
+<script src="js/suffixTrie.js"></script>
+<script src="js/listEvents.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/init.js"></script>
+</body>
+</html>
