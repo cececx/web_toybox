@@ -1,0 +1,18 @@
+1. Rubik's Cube: display and rotate
+   * WebGL & Three.js framework
+2. UI...
+3. solution
+   (1) cube representation
+       a. Seven alternative representations of Rubik's Cube, ACM paper (http://dl.acm.org/citation.cfm?id=801107&coll=portal&dl=ACM)
+          * 3-3-3 arrays of 3-digit integers
+          * 6-3-3 arrays of literals
+          * 5-12 literal matrix
+          * 11-11 sparse literal matrix
+          * 54-element vector
+          * 4-dimentional array
+          * 3-3-3 nested array
+
+          definition of operations:
+          90° rotation of the whole cube: X, Y, Z, ~X, ~Y, ~Z
+          90° rotation of a single side: ...
+          colors: 1-white
