@@ -58,4 +58,5 @@ function init () {
     input.addEventListener('input', function(event){ search(input.value) });
 
     setupCanvas();
+    window.onresize = function(event){ resetCanvas() };
 }
