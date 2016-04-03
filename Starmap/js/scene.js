@@ -1,7 +1,7 @@
 /* Notes:
    Suppose we use the right-hand axis, main camera(0,0,0)
 
-  (1) spherical coor(r, θ, φ)
+  (1) spherical coord(r, θ, φ)
       θ[0,π]: 和Z轴夹角, φ[0,2π]: 平面上和x轴夹角
       x = r * sinθ * cosφ
       y = r * sinθ * sinφ
@@ -46,41 +46,35 @@
   (6) Camera projection
       world coords -> cam coords -> film coords -> pixel coords
 
-      1. world to cam:
-      [X]   [cos(-A)cos(-B), -cos(-B)sin(-B), sin(-A)]   [U - Cx]
-      [Y] = [sin(-B),         cos(-B),        0      ] X [V - Cy]
-      [Z]   [-sin(-A)sin(-B), sin(-A)sin(-B), cos(-A)]   [W - Cz]
+      object pos: [ax, ay, az]
+      camera pos: [cx, cy, cz]
 
-      化简：
-      X = cosy ( sinz * dy + cosz * dx ) - siny * dz;
-      Y = sinx ( cosy * dz + siny * (sinz * dy + cosz * dx)) + cosx * (cosz * dy - sinz * dx)
-      Z = cosx ( cosy * dz + siny * (sinz * dy + cosz * dx)) - sinx * (cosz * dy - sinz * dx)
-      你玩儿得很开心嘛少女？
+      vew matrix:
+      [ux, uy, uz, -cxux - cyuy - czuz]
+      [vx, vy, vz, -cxvx - cyvy - czvz]
+      [Wx, wy, wz, -cxwx - cywy - czwz]
+      [0,  0,  0,  1                  ]
 
-      2. cam to screen
-      [x, y] = [f * X / Z, f * Y / Z]
-
-  それ以上！lets开始敲码！
+  それ以上！let's开始敲码！
 */
 
 // --------- constants & globals -----------
-var RADIUS = 5, CAMERA_SIZE = 300, CAM_SENS = Math.PI / 100;
+var RADIUS = 100, CAMERA_SIZE = 50, CAM_SENS = Math.PI / 2000, STAR_SIZE = 7;
 var canvas, context, camera;
+var lastPos = {};
+var isDrag = false;
 var starList = [];
 
 // ------ 喵物理学家库 -------
-function ra(h, m, s) {
+function Ra(h, m, s) {
     return (h + m/60 + s/3600) * 15 * Math.PI / 180;
 }
 
-function dec(d, m, s) {
+function Dec(d, m, s) {
     return (90 - (d + m/60 + s/3600)) * Math.PI / 180;
 }
 
 function coord3d(ra, dec) {
-    var x = r * sinθ * cosφ;
-    var y = r * sinθ * sinφ;
-    var z = r * cosθ;
     return [
         RADIUS * Math.sin(dec) * Math.cos(ra),
         RADIUS * Math.sin(dec) * Math.sin(ra),
@@ -89,14 +83,39 @@ function coord3d(ra, dec) {
 }
 
 // -------- 强行3D库wwww ----------
-function rotate(pos, ry, rz) {
-    var cosA = Math.cos(ry),
-        sinA = Math.sin(ry),
-        cosB = Math.cos(rz),
-        sinB = Math.sin(rz);
-    var x = cosA * cosB * pos.x - cosB * sinB * pox.y + sinA * pox.z;
-    var y = sinB * pox.x + cosB * pox.y;
-    var z = - sinA * sinB * pox.x + sinA * sinB * pox.y + cosA * pox.z;
+function Matrix() {};
+Matrix.prototype = {
+    constructor : Matrix,
+    Multiply : function(m1, m2) {
+        var m = [[],[],[],[]];
+        for (var i=0; i<4; i++) {
+            for (var j=0; j<4; j++) {
+                m[i][j] = 0;
+                for (var k=0; k<4; k++) {
+                    m[i][j] += m1[i][k] * m2[k][j];
+                }
+            }
+        }
+        return m;
+    },
+    RotateY : function(angle) {
+        var sinA = Math.sin(angle), cosA = Math.cos(angle);
+        return [
+            [cosA, 0, sinA, 0],
+            [0, 1, 0, 0],
+            [-sinA, 0, cosA, 0],
+            [0, 0, 0, 1]
+        ];
+    },
+    RotateAround : function(axis, angle) {
+        var x = axis.x, y = axis.y, z = axis.z, c = Math.cos(angle), s = Math.sin(angle);
+        return [
+            [c+x*x*(1-c), x*y*(1-c)-z*s, x*z*(1-c)+y*s, 0],
+            [y*x*(1-c)+z*s, c+y*y*(1-c), y*z*(1-c)-x*s, 0],
+            [z*x*(1-c)-y*s, z*y*(1-c)+x*s, c+z*z*(1-c),0],
+            [0,0,0,1]
+        ];
+    }
 }
 
 function Vector3(x, y, z) {
@@ -116,12 +135,26 @@ Vector3.prototype = {
     },
     clone : function() {
         return new Vector3(this.x, this.y, this.z);
+    },
+    transform : function(m) {
+        var x = this.x * m[0][0] + this.y * m[0][1] + this.z * m[0][2] + m[0][3];
+        var y = this.x * m[1][0] + this.y * m[1][1] + this.z * m[1][2] + m[1][3];
+        var z = this.x * m[2][0] + this.y * m[2][1] + this.z * m[2][2] + m[2][3];
+        return new Vector3(x, y, z);
+    },
+    dot : function(other) {
+        return (this.x * other.x + this.y * other.y + this.z * other.z);
+    },
+    cross : function(other) {
+        return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x * other.z, this.x * other.y - this.y * other.x);
     }
 }
 
-function Camera(pos, rot, len, w, h) {
+function Camera(pos, len, w, h) {
     this.position = pos.clone();
-    this.rotation = rot.clone();
+    this.right = new Vector3(1,0,0);
+    this.up = new Vector3(0,1,0);
+    this.forward = new Vector3(0,0,1);
     this.len = len;
     this.width = w;
     this.height = h;
@@ -129,52 +162,71 @@ function Camera(pos, rot, len, w, h) {
 Camera.prototype = {
     constructor : Camera,
     WorldToCamera : function(pos) {
-        var dx = pos.x - this.position.x,
-            dy = pos.y - this.position.y,
-            dz = pos.z - this.position.z;
-        var cx = Math.cos(this.rotation.x), sx = Math.sin(this.rotation.x),
-            cy = Math.cos(this.rotation.y), sy = Math.sin(this.rotation.y),
-            cz = Math.cos(this.rotation.z), sz = Math.sin(this.rotation.z);
-        var X = cy * ( sz * dy + cz * dx ) - sy * dz;
-        var Y = sx * ( cy * dz + sy * (sz * dy + cz * dx)) + cx * (cz * dy - sz * dx);
-        var Z = cx * ( cy * dz + sy * (sz * dy + cz * dx)) - sx * (cz * dy - sz * dx);
-        return new Vector3(X, Y, Z);
+        var u = this.right, v = this.up, w = this.forward, c = this.position;
+        /*
+        var matrix = new Matrix().Multiply(
+            [[u.x,u.y,u.z,0],[v.x,v.y,v.z,0],[w.x,w.y,w.z,0],[0,0,0,1]],
+            [[1,0,0,-c.x],[0,1,0,-c.y],[0,0,1,-c.z],[0,0,0,1]]
+        );*/
+
+        var matrix = [
+            [u.x, u.y, u.z, -c.x * u.x - c.y * u.y - c.z * u.z],
+            [v.x, v.y, v.z, -c.x * v.x - c.y * v.y - c.z * v.z],
+            [w.x, w.y, w.z, -c.x * w.x - c.y * w.y - c.z * w.z],
+            [  0,   0,   0,                                  1],
+        ];
+        return pos.transform(matrix);
     },
     WorldToScreen : function(pos) {
         var camPos = this.WorldToCamera(pos);
-        var x = this.len * camPos.z / camPos.x;
-        var y = this.len * camPos.y / camPos.x;
+        var x = this.len * camPos.x / camPos.z;
+        var y = this.len * camPos.y / camPos.z;
         x = (x + this.width / 2) / this.width;
         y = (y + this.height / 2) / this.height;
-        return new Vector3(x, y, camPos.x);
+        return new Vector3(x, y, camPos.z);
+    },
+    rotate : function(axis, angle) {
+        // var matrix = new Matrix().RotateAround(axis, angle);
+        var matrix = new Matrix().RotateAround(axis, angle);
+        this.right = this.right.transform(matrix);
+        this.up = this.up.transform(matrix);
+        this.forward = this.forward.transform(matrix);
     }
 }
 
+// ---------- 天体相关 ------------
+
 function Star(mag, ra, dec) {
     var v3 = coord3d(ra, dec);
-    this.position = new (v3[0], v3[1], v3[2]);
+    this.position = new Vector3(v3[0], v3[1], v3[2]);
     this.magnitude = mag;
 }
 
-function addStar() {
-    for (var i=0; i<5; i++) {
-        for (var j=0; j<5; j++) {
-            for (var k=0; k<5; k++) {
-                starList.push(new Vector3((i-2)*10,(j-2)*10,(k-2)*10));
-            }
-        }
+function initStars() {
+    function addStar(star) {
+        var ra = Ra(star[0], star[1], star[2]);
+        var dec = Dec(star[3], star[4], star[5]);
+        starList.push(new Star(star[6], ra, dec));
+    }
+    for (var i in scorpius_data) {
+        addStar(scorpius_data[i]);
     }
 }
 
 function drawStar(star) {
-    var scrPos = camera.WorldToScreen(star);
+    var scrPos = camera.WorldToScreen(star.position);
     if (scrPos.x <= 0) return;
+
+    var r = STAR_SIZE - star.magnitude > 1 ? STAR_SIZE - star.magnitude : 1;
+    r *= 1.5;
     context.beginPath();
     context.fillStyle = "white";
-    context.arc(scrPos.x * canvas.width, scrPos.y * canvas.height, 3, 0, Math.PI*2, true);
+    context.arc(scrPos.x * canvas.width, scrPos.y * canvas.height, r, 0, Math.PI*2, true);
     context.closePath();
     context.fill();
 }
+
+// -------------- 绘制相关 --------------------
 
 function setupCanvas() {
     canvas = document.getElementById("canvas");
@@ -183,12 +235,11 @@ function setupCanvas() {
         lastPos.y = event.clientY;
         isDrag = true;
     });
-    window.addEventListener("mouseup", function(event){
-        isDrag = false;
-    });
+    window.addEventListener("mouseup", function(event){ isDrag = false;});
+    window.addEventListener("mousemove", function(event){ moveCamera(event);});
     context = canvas.getContext("2d");
-    camera = new Camera(new Vector3(-40,0,0), new Vector3(0,0,0), 30, 50, 30);
-    addStar();
+    camera = new Camera(new Vector3(0,0,-30), 50, CAMERA_SIZE, CAMERA_SIZE * canvas.height / canvas.width);
+    initStars();
     resetCanvas();
 }
 
@@ -198,22 +249,14 @@ function resetCanvas() {
     update();
 }
 
-var lastPos;
-var isDrag = false;
-function moveCamera() {
+function moveCamera(event) {
     if (isDrag) {
-        canvas.ommousemove = function(event) {
-            var dx = event.clientX - lastPos.x;
-            var dy = event.clientY - lastPos.y;
-            lastPos.x = event.clientX;
-            lastPos.y = event.clientY;
-            camera.rotation.y += dx * CAM_SENS;
-            camera.rotation.z += dy * CAM_SENS;
-            if (camera.rotation.y > Math.PI * 2)
-                camera.rotation.y -= Math.PI * 2;
-            if (camera.rotation.z > Math.PI * 2)
-                camera.rotation.z -= Math.PI * 2;
-        }
+        var dx = event.clientX - lastPos.x;
+        var dy = event.clientY - lastPos.y;
+        lastPos.x = event.clientX;
+        lastPos.y = event.clientY;
+        camera.rotate(camera.up, -dx * CAM_SENS);
+        camera.rotate(camera.right, dy * CAM_SENS);
     }
 }
 
@@ -221,12 +264,9 @@ function update() {
     context.fillStyle = "#111122";
     context.fillRect(0,0,canvas.width,canvas.height);
 
-    // mouse move event
-    if
-
     for (var i in starList) {
         drawStar(starList[i]);
     }
 
-    window.requestAnimationFrame(draw);
+    window.requestAnimationFrame(update);
 }
