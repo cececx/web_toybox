@@ -59,28 +59,17 @@
 */
 
 // --------- constants & globals -----------
-var RADIUS = 100, CAMERA_SIZE = 50, CAM_SENS = Math.PI / 2000, STAR_SIZE = 7;
+var RADIUS = 2000,
+    CAMERA_LEN = 500,
+    CAMERA_SIZE = 100,
+    CAM_SENS = Math.PI / 2000,
+    MAX_CAM_DIST = 1000;
+    STAR_SIZE = 4;
 var canvas, context, camera;
 var lastPos = {};
 var isDrag = false;
 var starList = [];
 
-// ------ 喵物理学家库 -------
-function Ra(h, m, s) {
-    return (h + m/60 + s/3600) * 15 * Math.PI / 180;
-}
-
-function Dec(d, m, s) {
-    return (90 - (d + m/60 + s/3600)) * Math.PI / 180;
-}
-
-function coord3d(ra, dec) {
-    return [
-        RADIUS * Math.sin(dec) * Math.cos(ra),
-        RADIUS * Math.sin(dec) * Math.sin(ra),
-        RADIUS * Math.cos(dec)
-    ];
-}
 
 // -------- 强行3D库wwww ----------
 function Matrix() {};
@@ -97,15 +86,6 @@ Matrix.prototype = {
             }
         }
         return m;
-    },
-    RotateY : function(angle) {
-        var sinA = Math.sin(angle), cosA = Math.cos(angle);
-        return [
-            [cosA, 0, sinA, 0],
-            [0, 1, 0, 0],
-            [-sinA, 0, cosA, 0],
-            [0, 0, 0, 1]
-        ];
     },
     RotateAround : function(axis, angle) {
         var x = axis.x, y = axis.y, z = axis.z, c = Math.cos(angle), s = Math.sin(angle);
@@ -156,19 +136,19 @@ function Camera(pos, len, w, h) {
     this.up = new Vector3(0,1,0);
     this.forward = new Vector3(0,0,1);
     this.len = len;
+    this.dist = 0;
     this.width = w;
     this.height = h;
 }
 Camera.prototype = {
     constructor : Camera,
     WorldToCamera : function(pos) {
-        var u = this.right, v = this.up, w = this.forward, c = this.position;
-        /*
-        var matrix = new Matrix().Multiply(
-            [[u.x,u.y,u.z,0],[v.x,v.y,v.z,0],[w.x,w.y,w.z,0],[0,0,0,1]],
-            [[1,0,0,-c.x],[0,1,0,-c.y],[0,0,1,-c.z],[0,0,0,1]]
-        );*/
-
+        var u = this.right, v = this.up, w = this.forward,
+            c = new Vector3(
+                -this.dist * this.forward.x,
+                -this.dist * this.forward.y,
+                 -this.dist * this.forward.z
+             );
         var matrix = [
             [u.x, u.y, u.z, -c.x * u.x - c.y * u.y - c.z * u.z],
             [v.x, v.y, v.z, -c.x * v.x - c.y * v.y - c.z * v.z],
@@ -194,31 +174,50 @@ Camera.prototype = {
     }
 }
 
+// ------ 喵物理学家库 -------
+function Ra(h, m, s) {
+    return (h + m/60 + s/3600) * 15 * Math.PI / 180;
+}
+
+function Dec(d, m, s) {
+    return (90 - (d + m/60 + s/3600)) * Math.PI / 180;
+}
+
+function coord3d(ra, dec, dist) {
+    return new Vector3(
+        dist * Math.sin(dec) * Math.cos(ra),
+        dist * Math.sin(dec) * Math.sin(ra),
+        dist * Math.cos(dec)
+    );
+}
+
 // ---------- 天体相关 ------------
 
-function Star(mag, ra, dec) {
-    var v3 = coord3d(ra, dec);
-    this.position = new Vector3(v3[0], v3[1], v3[2]);
+function Star(cons, name, mag, ra, dec, dist) {
+    this.belongTo = cons;
+    this.name = name;
+    this.position = coord3d(ra, dec, dist/10);
     this.magnitude = mag;
+    this.distance = dist;
 }
 
 function initStars() {
-    function addStar(star) {
-        var ra = Ra(star[0], star[1], star[2]);
-        var dec = Dec(star[3], star[4], star[5]);
-        starList.push(new Star(star[6], ra, dec));
+    function addStar(cons, star) {
+        var ra = Ra(star.ra[0], star.ra[1], star.ra[2]);
+        var dec = Dec(star.dec[0], star.dec[1], star.dec[2]);
+        starList.push(new Star(cons, star.name, star.vmeg, ra, dec, star.dist));
     }
-    for (var i in scorpius_data) {
-        addStar(scorpius_data[i]);
+    for (var i in stardata) {
+        for (var j in stardata[i])
+            addStar(i, stardata[i][j]);
     }
 }
 
 function drawStar(star) {
     var scrPos = camera.WorldToScreen(star.position);
-    if (scrPos.x <= 0) return;
+    if (scrPos.z <= 0 || scrPos.x < 0 || scrPos.x > 1 || scrPos.y < 0 || scrPos.y > 1) return;
 
-    var r = STAR_SIZE - star.magnitude > 1 ? STAR_SIZE - star.magnitude : 1;
-    r *= 1.5;
+    var r = STAR_SIZE - star.magnitude > 1 ? (STAR_SIZE - star.magnitude) * 2 : 1;
     context.beginPath();
     context.fillStyle = "white";
     context.arc(scrPos.x * canvas.width, scrPos.y * canvas.height, r, 0, Math.PI*2, true);
@@ -229,23 +228,43 @@ function drawStar(star) {
 // -------------- 绘制相关 --------------------
 
 function setupCanvas() {
+    // init canvas
     canvas = document.getElementById("canvas");
+    // init context
+    context = canvas.getContext("2d");
+    // init camera
+    camera = new Camera(new Vector3(0,0,-30), CAMERA_LEN, CAMERA_SIZE, CAMERA_SIZE * canvas.height / canvas.width);
+
+    // events
     canvas.addEventListener("mousedown", function(event){
         lastPos.x = event.clientX;
         lastPos.y = event.clientY;
         isDrag = true;
     });
+
+    // mouse wheel event -> this part is tricky
+    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+
+    if (document.attachEvent) //if IE (and Opera depending on user setting)
+        document.attachEvent("on" + mousewheelevt, cameraZoom)
+    else if (document.addEventListener) //WC3 browsers
+        document.addEventListener(mousewheelevt, cameraZoom, false)
+
+    canvas.addEventListener("mousewheel", function(event){
+        cameraZoom(event.detail);
+    });
     window.addEventListener("mouseup", function(event){ isDrag = false;});
     window.addEventListener("mousemove", function(event){ moveCamera(event);});
-    context = canvas.getContext("2d");
-    camera = new Camera(new Vector3(0,0,-30), 50, CAMERA_SIZE, CAMERA_SIZE * canvas.height / canvas.width);
+
     initStars();
     resetCanvas();
 }
 
 function resetCanvas() {
-    canvas.width = window.innerWidth - 360;
-    canvas.height = window.innerHeight;
+    canvas.width = canvas.parentNode.offsetWidth;
+    canvas.height = canvas.parentNode.offsetHeight;
+    camera.width = CAMERA_SIZE;
+    camera.height = CAMERA_SIZE * canvas.height / canvas.width;
     update();
 }
 
@@ -255,11 +274,20 @@ function moveCamera(event) {
         var dy = event.clientY - lastPos.y;
         lastPos.x = event.clientX;
         lastPos.y = event.clientY;
-        camera.rotate(camera.up, -dx * CAM_SENS);
-        camera.rotate(camera.right, dy * CAM_SENS);
+        camera.rotate(camera.up, dx * CAM_SENS);
+        camera.rotate(camera.right, -dy * CAM_SENS);
     }
 }
 
+function cameraZoom(event){
+    var evt = window.event || e //equalize event object
+    var delta = evt.detail? evt.detail*(-120) : evt.wheelDelta;
+    camera.dist += delta * 10;
+    if (camera.dist < 0)
+        camera.dist = 0;
+    if (camera.dist > MAX_CAM_DIST)
+        camera.dist = MAX_CAM_DIST;
+}
 function update() {
     context.fillStyle = "#111122";
     context.fillRect(0,0,canvas.width,canvas.height);
