@@ -63,7 +63,8 @@ var RADIUS = 2000,
     CAMERA_LEN = 500,
     CAMERA_SIZE = 100,
     CAM_SENS = Math.PI / 2000,
-    MAX_CAM_DIST = 1000;
+    CAM_ZOOM_SPEED = 0.5;
+    MAX_CAM_DIST = 1500,
     STAR_SIZE = 4;
 var canvas, context, camera;
 var lastPos = {};
@@ -282,7 +283,7 @@ function moveCamera(event) {
 function cameraZoom(event){
     var evt = window.event || e //equalize event object
     var delta = evt.detail? evt.detail*(-120) : evt.wheelDelta;
-    camera.dist += delta * 10;
+    camera.dist -= delta * CAM_ZOOM_SPEED;
     if (camera.dist < 0)
         camera.dist = 0;
     if (camera.dist > MAX_CAM_DIST)
