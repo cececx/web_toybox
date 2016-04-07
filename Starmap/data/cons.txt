@@ -1,0 +1,88 @@
+﻿Andromeda	And	Andromedae	Andromeda	仙女座	90	37	A
+Antlia	Ant	Antliae	air pump	唧筒座	49	90	P
+Apus	Aps	Apodis	Bird of Paradise	天燕座	7	90	N
+Aquarius	Aqr	Aquarii	water-bearer	宝瓶座	65	86	A
+Aquila	Aql	Aquilae	eagle	天鹰座	78	71	S
+Ara	Ara	Arae	altar	天坛座	22	90	S
+Aries	Ari	Arietis	ram	白羊座	90	58	A
+Auriga	Aur	Aurigae	charioteer	御夫座	90	34	W
+Bootes	Boo	Bootis	herdsman	牧夫座	90	35	P
+Caelum	Cae	Caeli	chisel	雕具座	41	90	W
+Camelopardalis	Cam	Camelopa rsalis	giraffe	鹿豹座	90	3	W
+Cancer	Cnc	Cancri	crab	巨蟹座	90	57	W
+Canes Venatici	CVn	Canum Venaticorum	hunting dogs	猎犬座	90	37	P
+Canis Major	CMa	Canis Majoris	greater dog	大犬座	56	90	W
+Canis Minor	CMi	Canis Minoris	lesser dog	小犬座	80	77	W
+Capricornus	Cap	Capricorni	sea goat	摩羯座	62	90	A
+Carina	Car	Carinae	keel	船底座	14	90	W
+Cassiopeia	Cas	Cassiop evae	Cassiopeia	仙后座	90	12	A
+Centaurus	Cen	Centauri	centaur	半人马座	25	90	P
+Cepheus	Cep	Cephei	Cepheus	仙王座	90	1	A
+Cetus	Cet	Ceti	sea monster	鲸鱼座	65	79	A
+Chamaeleon	Cha	Chamaele Ontis	chameleon	蝘蜓座	7	90	N
+Circinus	Cir	Circini	compass	圆规座	19	90	P
+Columba	Col	Columbae	dove	天鸽座	46	90	S
+Coma Berenices	Com	Coma Berenices	Berenice's hair	后发座	90	56	P
+Corona Australis	CrA	Coronae Australis	southern crown	南冕座	44	90	S
+Corona Borealis	CrB	Coromae Borealis	northern crown	北冕座	90	50	S
+Corvus	Crv	Corvi	crow	乌鸦座	65	90	P
+Crater	Crt	Crateris	cup	巨爵座	65	90	P
+Crux	Cru	Crucis	southern cross	南十字座	25	90	P
+Cygnus	Cyg	Cygni	swan	天鹅座	90	28	S
+Delphinus	Del	Detphini	dolphin	海豚座	90	69	S
+Dorado	Dor	Doradus	goldfish	剑鱼座	20	90	W
+Draco	Dra	Draconis	dragon	天龙座	90	4	S
+Equuleus	Equ	Equulei	pony	小马座	90	77	A
+Eridanus	Eri	Eridani	river Eridanus	波江座	32	89	W
+Fornax	For	Fornacis	chemical furnace	天炉座	50	90	A
+Gemini	Gem	Geminorum	twins	双子座	90	55	W
+Grus	Gru	Gruis	Crane	天鹤座	33	90	A
+Hercules	Her	Herculis	Hercules	武仙座	90	38	S
+Horologium	Hor	Horologii	pendulum clock	时钟座	23	90	W
+Hydra	Hya	Hyarae	Hydra	长蛇座	54	83	P
+Hydrus	Hyi	Hydri	water snake	水蛇座	8	90	A
+Indus	Ind	Indi	Indian	印地安座	15	90	A
+Lacerta	Lac	Lacerta	lizard	蝎虎座	90	33	A
+Leo	Leo	Leonis	lion	狮子座	82	57	P
+Leo Minor	LMi	Leonis Minoris	lesser lion	小狮座	90	48	P
+Lepus	Lep	Leporis	hare	天兔座	62	90	W
+Libra	Lib	Librae	balance	天秤座	60	90	S
+Lupus	Lup	Lupi	wolf	豺狼座	34	90	S
+Lynx	Lyn	Lyncis	lynx	天猫座	90	28	W
+Lyra	Lyr	Lyrae	harp	天琴座	90	42	S
+Mensa	Men	Mensae	Table Mountain	山案座	5	90	N
+Microscopium	Mic	Microseopii	microscope	显微镜座	45	90	A
+Monoceros	Mon	Monocerotis	unicorn	麒麟座	78	87	W
+Musca	Mus	Muscae	fly	苍蝇座	14	90	N
+Norma	Nor	Normae	carpenter's level	矩尺座	29	90	S
+Octans	Oct	Octantis	octant	南极座	0	90	N
+Ophiuchus	Oph	Ophiuchi	serpent-bearer	蛇夫座	59	75	S
+Orion	Ori	Orionis	hunter	猎户座	79	67	W
+Pavo	Pav	Pavonis	peacock	孔雀座	15	90	S
+Pegasus	Peg	Pegasi	Pegasus	飞马座	90	53	A
+Perseus	Per	Perseus	Perseus	英仙座	90	31	W
+Phoenix	Phe	Phoenicis	phoenix	凤凰座	32	90	A
+Pictor	Pic	Pictoris	easel	绘架座	26	90	W
+Pisces	Psc	Piscium	fishes	双鱼座	83	56	A
+Piscis Austrinus	PsA	Piscis Austrini	southern fish	南鱼座	53	56	A
+Puppis	Pup	Puppis	poop deck	船尾座	39	90	W
+Pyxis	Pyx	Pyxidis	mariner's compass	罗盘座	52	90	P
+Reticulum	Ret	Reticuli	eyepiece graticule	网罟座	23	90	W
+Sagitta	Sge	Sagittae	arrow	天箭座	90	69	S
+Sagittarius	Sgr	Sagittarii	archer	人马座	44	90	S
+Scorpius	Sco	Scorpii	scorpion	天蝎座	44	90	S
+Sculptor	Scl	Sculptoris	sculptor	玉夫座	50	90	N
+Scutum	Sct	Scuti	shield	盾牌座	74	90	S
+Serpens	Ser	Serpentis	snake	巨蛇座	74	64	S
+Sextans	Sex	Sextantis	sextant	六分仪座	78	83	W
+Taurus	Tau	Tanri	bull	金牛座	88	58	S
+Telescopium	Tel	Telescopii	telescope	望远镜座	33	90	A
+Triangulum	Tri	Triangulum	triangle	三角座	90	52	S
+Triangulum Australe	TrA	Trianguci Austrais	southern triangle	南三角座	19	90	A
+Tucana	Tuc	Tucanae	toucan	杜鹃座	14	90	P
+Ursa Major	UMa	Ursae Majoris	great bear	大熊座	90	16	S
+Ursa Minor	UMi	Ursae Minoris	lesser bear	小熊座	90	0	P
+Vela	Vel	Velorum	sails	船帆座	32	90	P
+Virgo	Vir	Virginis	virgin	室女座	67	75	P
+Volans	Vol	Volantis	flying fish	飞鱼座	14	90	S
+Vulpecula	Vul	Vulpeculae	fox	狐狸座	90	61	N

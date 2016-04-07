@@ -37,7 +37,15 @@ function hasClass (elem, cName) {
 
 // toggle 233
 function toggleFold (elem) {
-    if (hasClass(elem, "close"))
+    var divs = elem.querySelectorAll("div");
+    var hide = false;
+    for (var i in divs) {
+        if (hasClass(divs[i], "hide")) {
+            hide = true;
+            removeClass(divs[i], "hide");
+        }
+    }
+    if (hasClass(elem, "close") || hide)
         unfold (elem);
     else
         fold (elem);

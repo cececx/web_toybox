@@ -61,10 +61,10 @@
 // --------- constants & globals -----------
 var RADIUS = 2000,
     CAMERA_LEN = 500,
-    CAMERA_SIZE = 100,
+    CAMERA_SIZE = 600,
     CAM_SENS = Math.PI / 2000,
     CAM_ZOOM_SPEED = 0.5;
-    MAX_CAM_DIST = 1500,
+    MAX_CAM_DIST = 800,
     STAR_SIZE = 4;
 var canvas, context, camera;
 var lastPos = {};
@@ -194,11 +194,12 @@ function coord3d(ra, dec, dist) {
 
 // ---------- 天体相关 ------------
 
-function Star(cons, name, mag, ra, dec, dist) {
+function Star(cons, name, vmeg, ameg, ra, dec, dist) {
     this.belongTo = cons;
     this.name = name;
     this.position = coord3d(ra, dec, dist/10);
-    this.magnitude = mag;
+    this.vmeg = vmeg;
+    this.ameg = ameg;
     this.distance = dist;
 }
 
@@ -206,7 +207,7 @@ function initStars() {
     function addStar(cons, star) {
         var ra = Ra(star.ra[0], star.ra[1], star.ra[2]);
         var dec = Dec(star.dec[0], star.dec[1], star.dec[2]);
-        starList.push(new Star(cons, star.name, star.vmeg, ra, dec, star.dist));
+        starList.push(new Star(cons, star.name, star.vmeg, star.ameg, ra, dec, star.dist));
     }
     for (var i in stardata) {
         for (var j in stardata[i])
@@ -218,12 +219,19 @@ function drawStar(star) {
     var scrPos = camera.WorldToScreen(star.position);
     if (scrPos.z <= 0 || scrPos.x < 0 || scrPos.x > 1 || scrPos.y < 0 || scrPos.y > 1) return;
 
-    var r = STAR_SIZE - star.magnitude > 1 ? (STAR_SIZE - star.magnitude) * 2 : 1;
-    context.beginPath();
+    // var meg = camera.dist > 50 ? star.ameg + 8 : star.vmeg;
+    var meg = star.vmeg;
+    var r = STAR_SIZE - meg > 1 ? (STAR_SIZE - meg) * 1.3 : 1;
+
     context.fillStyle = "white";
-    context.arc(scrPos.x * canvas.width, scrPos.y * canvas.height, r, 0, Math.PI*2, true);
-    context.closePath();
-    context.fill();
+    if (r > 1) {
+        context.beginPath();
+        context.arc(scrPos.x * canvas.width, scrPos.y * canvas.height, r, 0, Math.PI*2, true);
+        context.closePath();
+        context.fill();
+    } else {
+        context.fillRect(scrPos.x * canvas.width, scrPos.y * canvas.height, 1, 1);
+    }
 }
 
 // -------------- 绘制相关 --------------------

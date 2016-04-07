@@ -1,0 +1,171 @@
+﻿Andromeda	Alpheratz	α	壁宿二
+Andromeda	Mirach	β	奎宿九
+Andromeda	Alamak	γ	天大将军一
+Aries	Hamal	α	娄宿三
+Aries	Sheratan	β	娄宿一
+Aries	Mesarthim	γ1	娄宿二
+Aries	Botein	δ	天阴四
+Auriga	Capella	α	五车二
+Auriga	Menkalinan	β	五车三
+Auriga	Elnath 	β	五车五
+Auriga	N/A	θ	五车四
+Auriga	N/A	ι	五车一
+Bootes	Arcturus	α	大角
+Bootes	Nekkar	β	七公增五
+Bootes	Seginus	γ	招摇
+Bootes	N/A	δ	七公七
+Bootes	Izar	ε	梗河一
+Bootes	N/A	ζ	左摄提三
+Bootes	Muphrid	η	右摄提一
+Bootes	Asellus primus	θ	天枪三
+Cancer	Acubens/Sertan	α	柳宿增三
+Cancer	Tarf	β	柳宿增十
+Cancer	Asellus Borealis	γ	鬼宿三
+Cancer	Asellus Australis	δ	鬼宿四
+Canes Venatici	CorCaroli	α	常陈一
+Canes Venatici	Chara	β	常陈四
+Cassiopeia	Schedar	α	王良四
+Cassiopeia	Caph	β	王良一
+Cassiopeia	Marj	γ	策
+Cassiopeia	Ruchbah	δ	阁道三
+Cassiopeia	Segin / Navi	ε	阁道二
+Cassiopeia	N/A	ζ	附路
+Cepheus	Alderamin	α	天钩五
+Cepheus	Alfirk	β	上卫增一
+Cepheus	Errai	γ	少卫增八
+Cepheus	N/A	δ	造父一
+Cepheus	N/A	η	天钩四
+Cepheus	Al Kidr	θ	天钩三
+Cepheus	N/A	ι	天钩八
+Cepheus	N/A	λ	造父三
+Cepheus	Garnet Star	μ	造父四
+Cygnus	Deneb	α	天津四
+Cygnus	Dajajah	β	辇道增七
+Cygnus	Sadr	γ	天津一
+Cygnus	N/A	δ	天津二
+Cygnus	Gienah	ε	天津九
+Cygnus	N/A	η	辇道增五
+Equuleus	Kitalpha	α	虚宿二
+Gemini	Castor	α	北河二
+Gemini	Pollux	β	北河三
+Gemini	Alhena	γ	井宿三
+Gemini	Wasat	δ	天樽二
+Gemini	Mebsuta	ε	井宿五
+Gemini	Mekbuda	ζ	井宿七
+Gemini	Tejat Prior	η	钺
+Gemini	Nageba	θ	五诸侯一
+Gemini	N/A	ι	五诸侯三
+Gemini	Al Kirkab	κ	积薪
+Gemini	Kebash	λ	井宿八
+Gemini	Tejat Posterior	μ	井宿一
+Gemini	N/A	ν	井宿二
+Gemini	Alzir	ξ	井宿四
+Hercules	Ras Algethi	α	帝座
+Hercules	Kornephoros	β	天市右垣一
+Pegasus	N/A	α	室宿一
+Pegasus	N/A	β	室宿二
+Pegasus	N/A	γ	壁宿一
+Pegasus	N/A	ε	危宿三
+Pegasus	N/A	η	离宫四
+Pegasus	N/A	μ	离宫二
+Triangulum	Mothallah	α	娄宿增六
+Triangulum	Deltotum	β	天大将军九
+Triangulum	N/A	γ	天大将军十
+Ursa Major	Dubhe	α	天枢
+Ursa Major	Merak	β	天璇
+Ursa Major	Phecda	γ	天玑
+Ursa Major	Megrez	δ	天权
+Ursa Major	Alioth	ε	玉衡
+Ursa Major	Mizar	ζ	开阳
+Ursa Major	Alkaid	η	摇光
+Ursa Minor	Polaris	α	北极星
+Ursa Minor	Kochab	β	帝星
+Ursa Minor	Pherkad	γ	太子星
+Taurus	Aldebaran	α	毕宿五
+Taurus	Elnath	β	五车五
+Taurus	Ain	ε	毕宿一
+Taurus	Alheka	ζ	天关
+Taurus	Alcyone	η	昴宿六
+Pisces	Al Rischa	α	外屏七
+Pisces	Fum al Samakah	β	霹雳一
+Pisces	Simmah	γ	霹雳二
+Pisces	Kullat Nunu	η	右更二
+Leo	Regulus	α	轩辕十四
+Leo	Denebola	β	五帝座一
+Leo	Algieba	γ	轩辕十二
+Leo	Zosma	δ	太微右垣五
+Leo	Algenubi	ε	轩辕九
+Leo	Adhafera	ζ	轩辕十一
+Leo	Al Jabhah	η	轩辕十三
+Leo	Chertan	θ	太微右垣四
+Leo	Al Asad	κ	轩辕七
+Leo	Alterf	λ	轩辕八
+Leo	Rasalas	μ	轩辕十
+Leo	Subra	ο	轩辕十五
+Leo	Shir	ρ	轩辕十六
+Canis Minor	Procyon	α	南河三
+Canis Minor	Gomeisa	β	南河二
+Orion	Betelgeuse	α	参宿四
+Orion	Rigel	β	参宿七
+Orion	Bellatrix	γ	参宿五
+Orion	Mintaka	δ	参宿三
+Orion	Alnilam	ε	参宿二
+Orion	Alnitak	ζ	参宿一
+Orion	Saiph	κ	参宿六
+Orion	Meissa	λ	觜宿一
+Aquila	altair	α	河鼓二
+Serpens	Unukalhai	α	天市右垣　
+Virgo	Spica	α	角宿一
+Aquarius	Sadalmelik	α	危宿一
+Aquarius	Sadalsuud	β	虚宿一
+Cetus	Menkar	α	天囷一
+Cetus	Diphda	β	土司空
+Lepus	Arneb	α	厕一
+Lepus	Nihal	β	厕二
+Libra	Zubenelchemali	β	氐宿四
+Libra	Zubenelgenubi	α2	氐宿一
+Libra	Zubenalgubi	σ	折威七
+Ophiuchus	Ras Alhague	α	候
+Ophiuchus	Sabik	η	天市左垣二
+Ophiuchus	Yed Prior	δ	天市右垣一
+Ophiuchus	Cebalrai	β	宗正
+Canis Major	Sirius	α	天狼星
+Canis Major	Murzim	β	军市一
+Canis Major	Wezen	δ	弧矢一
+Canis Major	Adhara	ε	弧矢七
+Canis Major	Aludra	η	弧矢二
+Hydra	Alphard	α	星宿一
+Piscis Austrinus	Fomalhaut	α	北落师门
+Scorpius	Antares	α	心宿二
+Scorpius	Alniyat	τ	心宿三
+Scorpius	Alniyat	σ	心宿一
+Scorpius	Graffias	β1	房宿四
+Scorpius	Dschubba	δ	房宿三
+Scorpius	N/A	π	房宿一
+Scorpius	Jabah	ν	房宿二
+Scorpius	Sargas	θ	尾宿五
+Scorpius	Shaula	λ	尾宿八
+Scorpius	Lesath	υ	尾宿九
+Scorpius	Grafias	ζ	尾宿三
+Scorpius	N/A	μ	尾宿一
+Scorpius	N/A	ε	尾宿二
+Scorpius	Sargas	θ	尾宿五
+Lyra	Vega	α	织女一
+Lyra	Sheliak	β	渐台二
+Lyra	Sulafat	γ	渐台三
+Carina	Canopus	α	老人星
+Carina	Miaplacidus	β	南船五
+Carina	Avior	ε	海石一
+Centaurus	Rigil Kent	α	南门二
+Centaurus	Hadar	β	马腹一
+Eridanus	Achernar	α	水委一
+Crux	Acrux	α	十字架二
+Crux	Mimosa	β	十字架三
+Crux	Gacrux	γ	十字架一
+Grus	Al Nair	α	鹤一
+Perseus	Mirfak	α	天船三
+Vela	Regor	γ	天社一
+Sagittarius	Kaus Australis	ε	箕宿三
+Sagittarius	Nunki	σ	斗宿四
+Triangulum Australe	Atria	α	三角形三
+Pavo	Peacock	α	孔雀十一

@@ -36,9 +36,46 @@ function addDomItem (parent, strings) {
 
 var trie;
 var menuRoot;
+var consmap = [];
 function init () {
     menuRoot = document.getElementById("list-container");
     trie = new SuffixTrie();
+
+    // add seasons
+    var spring = addDomNode(menuRoot, "season", "SPRING");
+    var summer = addDomNode(menuRoot, "season", "SUMMER");
+    var autumn = addDomNode(menuRoot, "season", "AUTUMN");
+    var winter = addDomNode(menuRoot, "season", "WINTER");
+    var south = addDomNode(menuRoot, "season", "SOUTH SKY");
+
+    // add constellations
+    for (var cons of constellationData) {
+        var season;
+        switch(cons.season) {
+            case "P": season = spring; break;
+            case "S": season = summer; break;
+            case "A": season = autumn; break;
+            case "W": season = winter; break;
+            default: season = south; break;
+        }
+        if (cons.atti < 20) season = south;
+        var c = addDomNode(season, "constellation", cons.name, "THE " + cons.title.toUpperCase());
+        trie.add(cons.name.toLowerCase(), c);
+        trie.add(cons.trans.toLowerCase(), c);
+        consmap[cons.name.replace(" ","").toLowerCase()] = c;
+    }
+
+    // add stars
+    for (var star of starDetail) {
+        if (!consmap[star.belongTo])
+            console.log(star);
+        else
+            var s = addDomNode(consmap[star.belongTo], "star", star.name, star.trans);
+        trie.add(star.name.toLowerCase(), s);
+        trie.add(star.trans.toLowerCase(), s);
+    }
+    /*
+
     // traverse data
     for (var season of data) {                        // traverse seasons
         var ss = addDomNode(menuRoot, "season", season.name.toUpperCase());
@@ -51,7 +88,7 @@ function init () {
                 addDomItem(s, star.info);
             }
         }
-    }
+    }*/
 
     // add listener to text input
     var input = document.getElementById("search");
